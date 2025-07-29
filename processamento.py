@@ -385,6 +385,10 @@ else:
         # Criar cópia dos dados
         df_imputed = df.copy()
 
+        # Armazenar valores originais de 'estado_moradia' para quem não mora no Brasil
+        nao_mora_brasil_mask = df_imputed['vive_no_brasil'] != 1
+        estado_moradia_original = df_imputed.loc[nao_mora_brasil_mask, 'estado_moradia']
+
         # Configurar KNN Imputer
         imputer = KNNImputer(
             n_neighbors=k_neighbors,
@@ -405,6 +409,9 @@ else:
             # Atualizar dataframe
             for i, col in enumerate(colunas_imputar):
                 df_imputed[col] = dados_imputados[:, i]
+
+            # Restaurar valores originais de 'estado_moradia'
+            df_imputed.loc[nao_mora_brasil_mask, 'estado_moradia'] = estado_moradia_original
 
             print("✅ Imputação concluída!")
 
