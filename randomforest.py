@@ -7,10 +7,14 @@ from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# 1. Carregando os dados
-df = pd.read_csv("dados_knn_imputed.csv") 
+df = pd.read_csv("dados_processados.csv") 
 
-X = df[['idade','genero','etnia','pcd','vive_no_brasil','estado_moradia','nivel_ensino','formacao','tempo_experiencia_dados','linguagens_preferidas','bancos_de_dados','cloud_preferida']]
+df = df.dropna() 
+df = df.drop_duplicates() 
+df = df[df['cargo'] != '-1']
+
+
+X = df[['idade','genero','etnia','pcd','estado_moradia','nivel_ensino','formacao','tempo_experiencia_dados','linguagens_preferidas','bancos_de_dados','cloud_preferida']]
 
 y = df['cargo']
 
