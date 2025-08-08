@@ -1,0 +1,33 @@
+amazon 
+redshift 
+excel 
+azure
+bigquery   
+cassandra  
+databricks   
+datomic 
+db2      
+dynamodb 
+elaticsearch 
+firebase 
+firebird   
+google  
+hana  
+hive     
+mariadb  
+microsoft 
+mongodb  
+mysql      
+oracle  
+postgresql 
+presto  
+s3  
+snowflake 
+sqlserver
+
+
+1 - pegar o csv antigo -> criar as colunas vazias
+1.1 - deixa tudo escrito com lowercase
+1.2 - LIMPAR O DATASET (Lembrar de tirar tudo da coluna "cargo" que estiver VAZIO)
+2 - pegar cada palavra que da match com a coluna (mtach das strings)
+2 - se uma linha nao der match com a coluna, deixa 0, se der deixa com valor 1.

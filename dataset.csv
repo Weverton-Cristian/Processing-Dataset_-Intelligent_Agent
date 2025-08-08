@@ -3865,7 +3865,7 @@ idade,genero,etnia,pcd,vive_no_brasil,estado_moradia,nivel_ensino,formacao,tempo
 27,Masculino,Parda,Não,TRUE,São Paulo (SP),Graduação/Bacharelado,Computação / Engenharia de Software / Sistemas de Informação/ TI,de 4 a 6 anos,Python,"PostgreSQL, S3, Cassandra",Amazon Web Services (AWS),Engenheiro de Dados/Arquiteto de Dados/Data Engineer/Data Architect
 27,Masculino,Branca,Não,TRUE,São Paulo (SP),Graduação/Bacharelado,Outras Engenharias,de 3 a 4 anos,Python,Databricks,Amazon Web Services (AWS),Outra Opção
 45,Masculino,Branca,Não,TRUE,Paraná (PR),Pós-graduação,Economia/ Administração / Contabilidade / Finanças/ Negócios,Mais de 10 anos,R,"SAP HANA, Google BigQuery",Google Cloud (GCP),Analista de Dados/Data Analyst
-31,Feminino,Branca,Não,TRUE,São Paulo (SP),Pós-graduação,Economia/ Administração / Contabilidade / Finanças/ Negócios,de 7 a 10 anos,SQL Postegres,PostgreSQL,Azure (Microsoft),Analista de Dados/Data Analyst
+31,Feminino,Branca,Não,TRUE,São Paulo (SP),Pós-graduação,Economia/ Administração / Contabilidade / Finanças/ Negócios,de 7 a 10 anos,PostgreSQL,Azure (Microsoft),Analista de Dados/Data Analyst
 27,Masculino,Branca,Não,TRUE,Pernambuco (PE),Graduação/Bacharelado,Outras Engenharias,de 1 a 2 anos,Python,"SQL SERVER, SAP HANA, Snowflake",Não sei opinar,Analista de BI/BI Analyst
 38,Masculino,Branca,Não,TRUE,Rio de Janeiro (RJ),Pós-graduação,Economia/ Administração / Contabilidade / Finanças/ Negócios,Mais de 10 anos,Python,SQL SERVER,Não sei opinar,Analista de Marketing
 21,Masculino,Parda,Não,TRUE,Minas Gerais (MG),Estudante de Graduação,Estatística/ Matemática / Matemática Computacional/ Ciências Atuariais,Menos de 1 ano,R,"Databricks, Oracle",Azure (Microsoft),Cientista de Dados/Data Scientist
