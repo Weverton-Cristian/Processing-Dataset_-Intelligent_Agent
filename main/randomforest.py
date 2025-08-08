@@ -7,7 +7,7 @@ from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-df = pd.read_csv("processados_knn.csv") 
+df = pd.read_csv("dados_processados.csv") 
 
 # Limpeza básica
 df = df.dropna() 

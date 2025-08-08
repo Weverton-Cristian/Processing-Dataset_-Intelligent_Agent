@@ -142,15 +142,14 @@ mapa_estados = {
 df['estado_moradia'] = df['estado_moradia'].apply(lambda x: mapa_estados.get(x, -1))
 
 mapa_nivel = {
-    'fundamental': 0,
     'medio': 1,
     'tecnico': 2,
-    'superior incompleto': 3,
+    'estudante de graduação': 3,
     'superior completo': 4,
     'pos-graduação': 5,
     'pós-graduação': 5,
     'mestrado': 6,
-    'doutorado': 7,
+    'doutorado ou phd': 7,
     'MISSING': -1,
     'graduação/bacharelado': 4
 }
@@ -166,10 +165,10 @@ mapa_experiencia = {
     '3-5 anos': 4,
     '5-10 anos': 5,
     'mais de 10 anos': 6,
+    'de 7 a 10 anos': 7, 
     'MISSING': -1
 }
 df['tempo_experiencia_dados'] = df['tempo_experiencia_dados'].str.lower().map(mapa_experiencia).fillna(-1).astype(int)
-
 
 # =============================
 # BANCOS DE DADOS
@@ -283,7 +282,8 @@ if 'vive_no_brasil' in df.columns:
 
 df.to_csv('processados.csv', index=False)
 print("✅ Arquivo 'dados_processados.csv' salvo com sucesso.")
-for banco in lista_bancos:
-    count_usuarios = df[banco].sum()  # soma dos valores 1 em cada coluna
-    print(f"{banco}: {count_usuarios} usuário(s) usam")
+
+# for banco in lista_bancos:
+#     count_usuarios = df[banco].sum()  # soma dos valores 1 em cada coluna
+#     print(f"{banco}: {count_usuarios} usuário(s) usam")
 

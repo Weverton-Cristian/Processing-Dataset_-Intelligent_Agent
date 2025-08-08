@@ -5,6 +5,8 @@ from sklearn.impute import KNNImputer
 df = pd.read_csv('dados_processados.csv')
 
 colunas_features = df.columns.drop('cargo').tolist()
+colunas_features = df.columns.drop('idade').tolist()
+
 
 df[colunas_features] = df[colunas_features].replace(-1, np.nan)
 
