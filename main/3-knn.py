@@ -3,7 +3,8 @@ import numpy as np
 from sklearn.impute import KNNImputer
 
 # 1. Ler o CSV
-df = pd.read_csv('processados.csv')
+df = pd.read_csv('dataset_mapeado.csv')
+df = df[df['cargo'] != -1] 
 
 # 2. Definir colunas para imputação (removendo cargo e idade)
 colunas_features = df.columns.drop(['cargo', 'idade']).tolist()
@@ -24,5 +25,5 @@ for col in colunas_features:
         df[col] = df[col].round().astype(int)
 
 # 7. Salvar CSV
-df.to_csv('processados_knn.csv', index=False, encoding='utf-8-sig')
-print("✅ Arquivo 'processados_knn.csv' salvo com dados imputados via KNN.")
+df.to_csv('dataset_knn.csv', index=False, encoding='utf-8-sig')
+print("✅ Arquivo 'dataset_knn.csv' salvo com dados imputados via KNN.")

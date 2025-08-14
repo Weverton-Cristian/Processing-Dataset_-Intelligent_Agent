@@ -1,81 +1,109 @@
 import pandas as pd
 import numpy as np
-import unidecode
-from sklearn.impute import KNNImputer
-from sklearn.preprocessing import OneHotEncoder
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report, balanced_accuracy_score, confusion_matrix
+from sklearn.pipeline import Pipeline
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.impute import SimpleImputer
 from imblearn.over_sampling import SMOTE
+from imblearn.pipeline import Pipeline as ImbPipeline
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.base import BaseEstimator, TransformerMixin
 
-# Função para limpar strings
-def limpar_texto(s):
-    if pd.isna(s):
-        return s
-    s = str(s).strip().lower()
-    s = unidecode.unidecode(s)  # remove acentos
-    return s
+df = pd.read_csv('dataset_knn.csv')
 
-# Carrega dados
-df = pd.read_csv('dataset.csv')
+class FeatureInteractions(BaseEstimator, TransformerMixin):
+    def __init__(self):
+        pass
+    
+    def fit(self, X, y=None):
+        return self
+    
+    def transform(self, X):
+        X = X.copy()
+        # Interações desejadas
+        X['formacao_x_tempo'] = X['formacao'].astype(str) + "_" + X['tempo_experiencia_dados'].astype(str)
+        X['idade_x_tempo'] = X['idade'] * X['tempo_experiencia_dados']
+        X['tempo_x_linguagem'] = X['tempo_experiencia_dados'].astype(str) + "_" + X['linguagens_preferidas'].astype(str)
+        X['idade_x_escolaridade'] = X['idade'].astype(str) + "_" + X['nivel_ensino'].astype(str)
+        X['ensino_x_formacao'] = X['nivel_ensino'].astype(str) + "_" + X['formacao'].astype(str)
 
-# Limpa colunas de interesse
-colunas_texto = ['cargo', 'formacao', 'tempo_experiencia_dados', 
-                 'linguagens_preferidas', 'bancos_de_dados', 'cloud_preferida']
+        return X
 
-for col in colunas_texto:
-    df[col] = df[col].apply(limpar_texto)
+numerical_cols = ['idade', 'tempo_experiencia_dados', 'sql', 'nosql'] 
+categorical_cols = ['genero', 'etnia', 'estado_moradia', 'nivel_ensino', 'formacao', 'cloud_preferida', 'linguagens_preferidas']
+target_col = 'cargo'
 
-# Mapeia experiencia para ordinal
-map_exp = {
-    'nao tenho experiencia na area de dados': 0,
-    'menos de 1 ano': 1,
-    'de 1 a 2 anos': 2,
-    'de 3 a 4 anos': 3,
-    'de 4 a 6 anos': 4,
-    'de 7 a 10 anos': 5,
-    'mais de 10 anos': 6
+X = df[numerical_cols + categorical_cols]
+y = df[target_col]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=42, stratify=y
+)
+
+
+
+num_pipeline = Pipeline([
+    ('imputer', SimpleImputer(strategy='mean')),
+    ('scaler', StandardScaler())
+])
+
+
+cat_pipeline = Pipeline([
+    ('imputer', SimpleImputer(strategy='most_frequent')),
+    ('onehot', OneHotEncoder(handle_unknown='ignore'))
+])
+
+# Column transformer
+preprocessor = ColumnTransformer([
+    ('num', num_pipeline, numerical_cols),
+    ('cat', cat_pipeline, categorical_cols)
+])
+
+pipeline = ImbPipeline([
+    ('interactions', FeatureInteractions()),  # adiciona interações
+    ('preprocessor', preprocessor),
+    ('smote', SMOTE(random_state=42)),
+    ('classifier', RandomForestClassifier(class_weight='balanced', random_state=42))
+])
+
+
+param_grid = {
+    'classifier__n_estimators': [200, 500],
+    'classifier__max_depth': [10, 20, None],
+    'classifier__min_samples_split': [2, 5],
+    'classifier__min_samples_leaf': [1, 2]
 }
-df['tempo_experiencia_dados'] = df['tempo_experiencia_dados'].map(map_exp)
 
-# Agrupamento de linguagens
-top_langs = ['python', 'r', 'sql', 'scala']
-df['linguagens_preferidas'] = df['linguagens_preferidas'].apply(
-    lambda x: x if x in top_langs else 'outra'
-)
+grid = GridSearchCV(pipeline, param_grid, cv=5, scoring='f1_macro', n_jobs=-1, verbose=2)
+grid.fit(X_train, y_train)
 
-# Agrupamento de bancos (exemplo simples: SQL, NoSQL, Cloud, Outro)
-def agrupar_banco(b):
-    if pd.isna(b): return b
-    sql_terms = ['mysql', 'postgresql', 'sql server', 'sqlite', 'oracle', 'mariadb']
-    nosql_terms = ['mongodb', 'redis', 'cassandra', 'neo4j', 'dynamodb']
-    cloud_terms = ['google bigquery', 's3', 'snowflake', 'amazon redshift', 'amazon athena']
-    if b in sql_terms: return 'sql'
-    if b in nosql_terms: return 'nosql'
-    if b in cloud_terms: return 'cloud'
-    return 'outro'
-df['bancos_categoria'] = df['bancos_de_dados'].apply(agrupar_banco)
+best_model = grid.best_estimator_
+print("✅ Melhor modelo encontrado:")
+print(grid.best_params_)
 
-# Feature: quantidade de bancos
-df['qtd_bancos_conhece'] = df['bancos_de_dados'].apply(
-    lambda x: len(str(x).split(',')) if pd.notna(x) else 0
-)
+y_pred = best_model.predict(X_test)
 
-# One-Hot Encoding para colunas categóricas
-categoricas = ['cargo', 'formacao', 'linguagens_preferidas', 'cloud_preferida', 'bancos_categoria']
-df = pd.get_dummies(df, columns=categoricas, drop_first=False)
+balanced_acc = balanced_accuracy_score(y_test, y_pred)
+print("Balanced Accuracy:", balanced_acc)
+print("\nRelatório de Classificação:\n", classification_report(y_test, y_pred))
 
-# Substitui -1 por NaN e aplica KNN Imputer
-df = df.replace(-1, np.nan)
-imputer = KNNImputer(n_neighbors=5)
-df[df.columns] = imputer.fit_transform(df)
+# Matriz de confusão
+cm = confusion_matrix(y_test, y_pred)
+plt.figure(figsize=(10,7))
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
+plt.xlabel("Predito")
+plt.ylabel("Real")
+plt.title("Matriz de Confusão")
+plt.show()
 
-# Separa features e target
-X = df.drop(columns=['cargo'])  # ajuste conforme sua variável target
-y = df['cargo']
-
-# Balanceamento
-smote = SMOTE(random_state=42)
-X_res, y_res = smote.fit_resample(X, y)
-
-# Salva
-df_bal = pd.concat([pd.DataFrame(X_res, columns=X.columns), pd.Series(y_res, name='cargo')], axis=1)
-df_bal.to_csv('processados_knn_smote.csv', index=False)
-print("Arquivo processados_knn_smote.csv salvo com dados imputados e balanceados.")
+# Precisamos transformar o X_train para pegar feature names do one-hot encoding
+X_train_transformed = best_model.named_steps['preprocessor'].transform(X_train)
+if hasattr(best_model.named_steps['classifier'], 'feature_importances_'):
+    importancias = pd.Series(best_model.named_steps['classifier'].feature_importances_,
+                              index=np.array(best_model.named_steps['preprocessor'].get_feature_names_out()))
+    print("\n📊 Top 15 Importância das variáveis:")
+    print(importancias.sort_values(ascending=False).head(15))

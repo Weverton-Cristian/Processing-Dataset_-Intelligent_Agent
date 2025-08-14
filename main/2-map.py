@@ -8,11 +8,11 @@ df = pd.read_csv('dataset_limpo.csv')
 def agrupar_valores_raros(df, coluna, mapa, preprocess=None):
     def mapear(valor):
         if pd.isna(valor) or str(valor).strip() == "":
-            return 0  # ausência de valor
+            return -1  # ausência de valor
         if preprocess:
             valor = preprocess(valor)
         valor_norm = str(valor).strip().replace('"', '').replace("'", "")
-        return mapa.get(valor_norm, 50)
+        return mapa.get(valor_norm, -1)
 
     df[coluna] = df[coluna].apply(mapear).astype(int)
 
@@ -93,7 +93,7 @@ def mapear(df):
         agrupar_valores_raros(df, 'linguagens_preferidas', mapa_linguagens_preferidas)
 
     if 'pcd' in df.columns:
-        mapa_pcd = {0: 1, 1: 2}
+        mapa_pcd = {'0': 1, '1': 2}
         agrupar_valores_raros(df, 'pcd', mapa_pcd)
 
 
@@ -130,10 +130,10 @@ def mapear(df):
             'outraopcao': 4,
             'analistadenegocios/businessanalyst': 5,
             'desenvolvedor/engenheirodesoftware/analistadesistemas': 6,
-            'analistadesuporte/analistatecnico': 7,
-            'analyticsengineer': 8,
-            'engenheirodemachinelearning/mlengineer': 9,
-            'productmanager/productowner(pm/apm/dpm/gpm/po)': 10,
+            # 'analistadesuporte/analistatecnico': 7,
+            # 'analyticsengineer': 8,
+            # 'engenheirodemachinelearning/mlengineer': 9,
+            # 'productmanager/productowner(pm/apm/dpm/gpm/po)': 10,
             'analistadedados/dataanalyst': 11,
         }
         agrupar_valores_raros(df, 'cargo', mapa_cargo)

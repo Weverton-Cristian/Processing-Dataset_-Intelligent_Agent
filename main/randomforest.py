@@ -7,66 +7,53 @@ from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-df = pd.read_csv("processados_knn.csv") 
+df = pd.read_csv("dataset_knn.csv") 
 
-# Limpeza básica
+
 df = df.dropna() 
-df = df[df['cargo'] != -1]  # cargo numérico (int), não string '-1'
+df = df[df['cargo'] != -1]  
 
-# Lista das colunas base (sem bancos_de_dados, que foi substituído pelas colunas binárias)
+
 colunas_base = [
-    'idade','genero','etnia','estado_moradia',
-    'nivel_ensino','formacao','tempo_experiencia_dados',
-    'linguagens_preferidas','cloud_preferida'
+    'idade', 'estado_moradia', 'tempo_experiencia_dados',
+    'formacao', 'sql',
+    'etnia', 'nivel_ensino', 'genero', 'linguagens_preferidas'
 ]
 
-# Lista das colunas binárias de bancos de dados (seu mapa_bancos_regex)
-lista_bancos = [
-    'amazon', 'redshift', 'bigquery', 'databricks',
-    'dynamodb', 'google',
-    'hana', 'hive', 'mongodb', 'mysql', 'oracle',
-    'postgresql', 's3', 'sqlserver'
-]
-
-# Features (X) = colunas base + colunas binárias de bancos
-X = df[colunas_base + lista_bancos]
-
-# Target (y)
+X = df[colunas_base]
 y = df['cargo']
 
-# Dividir treino/teste
+
 X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.3, random_state=42, stratify=y
+    X, y, test_size=0.3, random_state=42
 )
 
-# Treinar Random Forest
+
 model = RandomForestClassifier(n_estimators=100, random_state=42)
 model.fit(X_train, y_train)
 
-# Prever
+
 y_pred = model.predict(X_test)
 
-# Métricas
+
 acc = accuracy_score(y_test, y_pred)
 print("Acurácia:", acc)
 print("\nRelatório de Classificação:\n", classification_report(y_test, y_pred))
 
-# Matriz de Confusão
-cm = confusion_matrix(y_test, y_pred)
-plt.figure(figsize=(10, 8))
-sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
-plt.title("Matriz de Confusão")
-plt.xlabel("Predito")
-plt.ylabel("Real")
-plt.show()
+# cm = confusion_matrix(y_test, y_pred)
+# plt.figure(figsize=(10, 8))
+# sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
+# plt.title("Matriz de Confusão")
+# plt.xlabel("Predito")
+# plt.ylabel("Real")
+# plt.show()
 
-# Importância das features
-importances = model.feature_importances_
-feat_names = X.columns
-plt.figure(figsize=(10, 8))
-sns.barplot(x=importances, y=feat_names)
-plt.title('Importância das Variáveis')
-plt.show()
+# importances = model.feature_importances_
+# feat_names = X.columns
+# plt.figure(figsize=(10, 8))
+# sns.barplot(x=importances, y=feat_names)
+# plt.title('Importância das Variáveis')
+# plt.show()
 
 # PCA para visualização
 # pca = PCA(n_components=2)

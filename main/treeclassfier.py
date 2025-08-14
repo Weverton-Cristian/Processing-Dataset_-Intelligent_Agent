@@ -8,25 +8,20 @@ from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 
 # 1. Carregar o novo dataset
-df = pd.read_csv("dados_processados.csv")  # aqui seu arquivo já deve ter as colunas extras
+df = pd.read_csv("dataset_mapeado.csv")  # aqui seu arquivo já deve ter as colunas extras
 
 df = df.dropna()
 df = df.drop_duplicates()
 df = df[df['cargo'] != -1]  # cargo numérico (int), não string '-1'
 
 # 2. Definir as colunas de features incluindo bancos de dados
-colunas_bancos = [
-    'amazon','redshift','excel','azure','bigquery','cassandra','databricks',
-    'db2','dynamodb','elaticsearch','firebase','firebird','google','hana',
-    'hive','mariadb','microsoft','mongodb','mysql','oracle','postgresql',
-    'presto','s3','snowflake','sqlserver'
-]
 
 # Colunas base + colunas dos bancos
 colunas_features = [
-    'idade','genero','etnia','pcd','estado_moradia','nivel_ensino',
-    'formacao','tempo_experiencia_dados','linguagens_preferidas','cloud_preferida'
-] + colunas_bancos
+    'idade', 'estado_moradia', 'tempo_experiencia_dados',
+    'formacao', 'sql', 'nosql',
+    'etnia', 'nivel_ensino', 'genero', 'linguagens_preferidas'
+]
 
 X = df[colunas_features]
 y = df['cargo']
@@ -53,39 +48,13 @@ prever = pd.DataFrame({
     'idade': [25],
     'genero': [0],
     'etnia': [0],
-    'pcd': [0],
     'estado_moradia': [15],
     'nivel_ensino': [5],
     'formacao': [2],
     'tempo_experiencia_dados': [0],
     'linguagens_preferidas': [0],
-    'cloud_preferida': [0],
-    # Bancos (exemplo: usa mysql e sqlserver)
-    'amazon': [0],
-    'redshift': [0],
-    'excel': [0],
-    'azure': [0],
-    'bigquery': [0],
-    'cassandra': [0],
-    'databricks': [0],
-    'db2': [0],
-    'dynamodb': [0],
-    'elaticsearch': [0],
-    'firebase': [0],
-    'firebird': [0],
-    'google': [0],
-    'hana': [0],
-    'hive': [0],
-    'mariadb': [0],
-    'microsoft': [0],
-    'mongodb': [0],
-    'mysql': [1],
-    'oracle': [0],
-    'postgresql': [0],
-    'presto': [0],
-    's3': [0],
-    'snowflake': [0],
-    'sqlserver': [1]
+    'sql': [1],
+    'nosql': [0]
 })
 
 entrada = prever[colunas_features]
