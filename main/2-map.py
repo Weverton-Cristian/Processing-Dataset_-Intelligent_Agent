@@ -33,5 +33,4 @@ def mapear(csv):
         'rr': 22, 'sc': 23, 'sp': 24, 'se': 25, 'to': 26, '': -1
     }
     df['estado_moradia'] = df['estado_moradia'].map(mapa_estados).fillna(-1).astype(int)
-
-  
+    
