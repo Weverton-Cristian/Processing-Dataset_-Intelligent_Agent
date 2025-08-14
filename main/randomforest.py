@@ -7,24 +7,25 @@ from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-df = pd.read_csv("dados_processados.csv") 
+df = pd.read_csv("processados_knn.csv") 
 
 # Limpeza básica
 df = df.dropna() 
+df = df[df['cargo'] != -1]  # cargo numérico (int), não string '-1'
 
 # Lista das colunas base (sem bancos_de_dados, que foi substituído pelas colunas binárias)
 colunas_base = [
-    'idade','genero','etnia','pcd','estado_moradia',
+    'idade','genero','etnia','estado_moradia',
     'nivel_ensino','formacao','tempo_experiencia_dados',
     'linguagens_preferidas','cloud_preferida'
 ]
 
 # Lista das colunas binárias de bancos de dados (seu mapa_bancos_regex)
 lista_bancos = [
-    'amazon', 'redshift', 'excel', 'azure', 'bigquery', 'cassandra', 'databricks',
-    'db2', 'dynamodb', 'elaticsearch', 'firebase', 'firebird', 'google',
-    'hana', 'hive', 'mariadb', 'microsoft', 'mongodb', 'mysql', 'oracle',
-    'postgresql', 'presto', 's3', 'snowflake', 'sqlserver'
+    'amazon', 'redshift', 'bigquery', 'databricks',
+    'dynamodb', 'google',
+    'hana', 'hive', 'mongodb', 'mysql', 'oracle',
+    'postgresql', 's3', 'sqlserver'
 ]
 
 # Features (X) = colunas base + colunas binárias de bancos
@@ -68,13 +69,13 @@ plt.title('Importância das Variáveis')
 plt.show()
 
 # PCA para visualização
-pca = PCA(n_components=2)
-X_reduced = pca.fit_transform(X_test)
+# pca = PCA(n_components=2)
+# X_reduced = pca.fit_transform(X_test)
 
-plt.figure(figsize=(10, 6))
-scatter = plt.scatter(X_reduced[:, 0], X_reduced[:, 1], c=y_pred, cmap='tab10', alpha=0.7)
-plt.title("PCA - Visualização das Previsões")
-plt.xlabel("Componente Principal 1")
-plt.ylabel("Componente Principal 2")
-plt.colorbar(scatter, label='Classe prevista')
-plt.show()
+# plt.figure(figsize=(10, 6))
+# scatter = plt.scatter(X_reduced[:, 0], X_reduced[:, 1], c=y_pred, cmap='tab10', alpha=0.7)
+# plt.title("PCA - Visualização das Previsões")
+# plt.xlabel("Componente Principal 1")
+# plt.ylabel("Componente Principal 2")
+# plt.colorbar(scatter, label='Classe prevista')
+# plt.show()

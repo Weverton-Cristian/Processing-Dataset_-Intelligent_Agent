@@ -102,17 +102,11 @@ mapa_cargo = {
     'Professor': 6,
     'Analista de Negócios/Business Analyst': 7,
     'Analista de Suporte/Analista Técnico': 8,
-    'Outra Opção': 9,
     'Engenheiro de Dados/Arquiteto de Dados/Data Engineer/Data Architect': 10,
     'Analytics Engineer ': 11,
     'Engenheiro de Machine Learning/ML Engineer': 12,
     'Product Manager/ Product Owner (PM/APM/DPM/GPM/PO)': 13,
     'Analista de Inteligência de Mercado/Market Intelligence': 14,
-    'Outras Engenharias (não inclui dev)': 15,
-    'Estatístico': 16,
-    'Analista de Marketing': 17,
-    'Economista': 18,
-    'DBA/Administrador de Banco de Dados': 19,
     'MISSING': -1
 }
 df['cargo'] = df['cargo'].fillna('MISSING').astype(str).replace('', 'MISSING')

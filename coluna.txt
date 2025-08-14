@@ -1,33 +1,119 @@
-amazon 
-redshift 
-excel 
-azure
-bigquery   
-cassandra  
-databricks   
-datomic 
-db2      
-dynamodb 
-elaticsearch 
-firebase 
-firebird   
-google  
-hana  
-hive     
-mariadb  
-microsoft 
-mongodb  
-mysql      
-oracle  
-postgresql 
-presto  
-s3  
-snowflake 
-sqlserver
+VERIFICAR COLUNAS COM MAIS VALORES NULOS
+VERIFICA A IMPORTANCIA DELAS
 
 
-1 - pegar o csv antigo -> criar as colunas vazias
-1.1 - deixa tudo escrito com lowercase
-1.2 - LIMPAR O DATASET (Lembrar de tirar tudo da coluna "cargo" que estiver VAZIO)
-2 - pegar cada palavra que da match com a coluna (mtach das strings)
-2 - se uma linha nao der match com a coluna, deixa 0, se der deixa com valor 1.
+
+ABAIXO DE 25 APAGAR
+
+=== CARGO ===
+analista de dados/data analyst: 636
+cientista de dados/data scientist: 555
+engenheiro de dados/arquiteto de dados/data engineer/data architect: 488
+analista de bi/bi analyst: 378
+outra opcao: 280
+analista de negocios/business analyst: 123
+desenvolvedor/ engenheiro de software/ analista de sistemas: 106
+analista de suporte/analista tecnico: 72
+analytics engineer: 70
+engenheiro de machine learning/ml engineer: 69
+product manager/ product owner (pm/apm/dpm/gpm/po): 51
+
+=== FORMACAO ===
+computacao / engenharia de software / sistemas de informacao/ ti: 1098
+outras engenharias: 697
+economia/ administracao / contabilidade / financas/ negocios: 455
+estatistica/ matematica / matematica computacional/ ciencias atuariais: 265
+outra opcao: 128
+marketing / publicidade / comunicacao / jornalismo: 81
+quimica / fisica: 69
+ciencias biologicas/ farmacia/ medicina/ area da saude: 63
+ciencias sociais: 44
+
+=== TEMPO_EXPERIENCIA_DADOS ===
+de 1 a 2 anos: 904
+de 3 a 4 anos: 608
+menos de 1 ano: 538
+de 4 a 6 anos: 369
+mais de 10 anos: 211
+de 7 a 10 anos: 186
+nao tenho experiencia na area de dados: 158
+
+=== LINGUAGENS_PREFERIDAS ===
+python: 2575
+r: 248
+sql: 38
+scala: 35
+c/c++/c#: 25
+
+
+=== BANCOS_DE_DADOS ===
+sql server: 951
+mysql: 805
+postgresql: 761
+google bigquery: 733
+s3: 604
+databricks: 531
+oracle: 477
+amazon athena: 326
+amazon redshift: 323
+mongodb: 317
+hive: 246
+sqlite: 169
+sap hana: 165
+snowflake: 165
+amazon aurora ou rds: 153
+dynamodb: 132
+microsoft access: 126
+presto: 118
+elaticsearch: 117
+mariadb: 83
+db2: 82
+redis: 80
+firebase: 70
+splunk: 47
+nenhum: 37
+cassandra: 35
+firebird: 32
+hbase: 32
+google firestore: 29
+neo4j: 28
+excel: 25
+
+nosql 
+sql
+
+
+=== CLOUD_PREFERIDA ===
+amazon web services (aws): 1153
+google cloud (gcp): 717
+nao sei opinar: 552
+azure (microsoft): 544
+outra cloud: 8
+
+=== NIVEL_ENSINO ===
+graduacao/bacharelado: 1141
+pos-graduacao: 897
+estudante de graduacao: 446
+mestrado: 306
+doutorado ou phd: 110
+nao tenho graduacao formal: 65
+prefiro nao informar: 9
+
+=== GENERO ===
+masculino: 2208
+feminino: 751
+prefiro nao informar: 9
+
+=== ETNIA ===
+branca: 1910
+parda: 735
+preta: 206
+amarela: 83
+prefiro nao informar: 23
+indigena: 9
+outra: 8
+
+=== PCD ===
+0: 2920
+1: 43
+prefiro nao informar: 11

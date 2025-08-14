@@ -2,21 +2,27 @@ import pandas as pd
 import numpy as np
 from sklearn.impute import KNNImputer
 
-df = pd.read_csv('dados_processados.csv')
+# 1. Ler o CSV
+df = pd.read_csv('processados.csv')
 
-colunas_features = df.columns.drop('cargo').tolist()
-colunas_features = df.columns.drop('idade').tolist()
+# 2. Definir colunas para imputação (removendo cargo e idade)
+colunas_features = df.columns.drop(['cargo', 'idade']).tolist()
 
+# 3. Guardar tipos originais
+tipos_originais = df[colunas_features].dtypes
 
+# 4. Substituir -1 por NaN
 df[colunas_features] = df[colunas_features].replace(-1, np.nan)
 
+# 5. Aplicar KNNImputer
 imputer = KNNImputer(n_neighbors=5)
 df[colunas_features] = imputer.fit_transform(df[colunas_features])
 
+# 6. Restaurar colunas inteiras para int
 for col in colunas_features:
-    # Se a coluna original era int, arredondar e converter para int
-    if pd.api.types.is_integer_dtype(df[col].dropna()):
+    if np.issubdtype(tipos_originais[col], np.integer):
         df[col] = df[col].round().astype(int)
 
-df.to_csv('processados_knn.csv', index=False)
-print("Arquivo 'processados_knn.csv' salvo com dados imputados via KNN.")
+# 7. Salvar CSV
+df.to_csv('processados_knn.csv', index=False, encoding='utf-8-sig')
+print("✅ Arquivo 'processados_knn.csv' salvo com dados imputados via KNN.")
