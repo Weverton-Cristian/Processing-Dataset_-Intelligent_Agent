@@ -11,13 +11,13 @@ df = df[df["cargo"].astype(str).str.strip() != ""]
 
 # Colunas para analisar
 colunas = [
-    "cargo",
-    "formacao",
-    "tempo_experiencia_dados",
-    "linguagens_preferidas",
+    # "cargo",
+    # "formacao",
+    # "tempo_experiencia_dados",
+    # "linguagens_preferidas",
     "bancos_de_dados",
     "cloud_preferida",
-    "nivel_ensino", "genero", "etnia", "pcd"
+    # "nivel_ensino", "genero", "etnia", "pcd"
 ]
 
 # Função para processar cada coluna
