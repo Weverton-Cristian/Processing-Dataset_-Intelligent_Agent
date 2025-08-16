@@ -6,6 +6,7 @@ import re
 df = pd.read_csv('dataset_limpo.csv')
 
 def agrupar_valores_raros(df, coluna, mapa, preprocess=None):
+    
     def mapear(valor):
         if pd.isna(valor) or str(valor).strip() == "":
             return -1  # ausência de valor

@@ -5,6 +5,10 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 
 df = pd.read_csv("dataset.csv")
+df = df.drop_duplicates()
+df = df.dropna(subset=["cargo"])
+df = df[df["cargo"].astype(str).str.strip() != ""]
+
 df = pd.get_dummies(df, columns=["estado_moradia"])
 df = pd.get_dummies(df, columns=["etnia"])
 # df = pd.get_dummies(df, columns=["cloud_preferida"])
@@ -22,7 +26,7 @@ df["cargo"].value_counts()
 
 
 for i in df.columns:
-  raros = df[i].value_counts()[df[i].value_counts() < 30].index
+  raros = df[i].value_counts()[df[i].value_counts() < 35].index
   df.loc[df[i].isin(raros), i] = 'Outra Opção'
   df.drop(df[df[i] == 'Outra Opção'].index, inplace=True)
 
@@ -62,7 +66,7 @@ X = df.drop(["cargo", "vive_no_brasil"], axis=1)
 
 from sklearn.model_selection import train_test_split
 
-# Dividir os dados: 80% para treino, 20% para teste
+# Dividir os dados: 70% para treino, 30% para teste
 X_train, X_test, y_train, y_test = train_test_split(
     X, y,
     test_size=0.3,

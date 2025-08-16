@@ -8,7 +8,7 @@ from sklearn.impute import SimpleImputer
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-df = pd.read_csv('dataset_knn.csv')
+df = pd.read_csv('dataset_mapeado.csv')
 
 colunas = [
     'idade','etnia','estado_moradia', 'genero',
@@ -37,7 +37,7 @@ X = pd.DataFrame(X_filled, columns=X.columns)
 
 # --- Split ---
 X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.5, random_state=42, stratify=y
+    X, y, test_size=0.3, random_state=42, stratify=y
 )
 
 # --- SMOTE ---

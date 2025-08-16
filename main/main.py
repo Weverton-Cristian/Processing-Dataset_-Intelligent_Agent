@@ -45,7 +45,6 @@ X_train, X_test, y_train, y_test = train_test_split(
 )
 
 
-
 num_pipeline = Pipeline([
     ('imputer', SimpleImputer(strategy='mean')),
     ('scaler', StandardScaler())
