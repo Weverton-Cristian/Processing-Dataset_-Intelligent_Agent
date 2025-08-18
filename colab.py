@@ -48,13 +48,13 @@ df['genero'] = le.fit_transform(df['genero'])
 df['formacao'] = le.fit_transform(df['formacao'])
 df['tempo_experiencia_dados'] = le.fit_transform(df['tempo_experiencia_dados'])
 df['linguagens_preferidas'] = le.fit_transform(df['linguagens_preferidas'])
-df['bancos_de_dados'] = le.fit_transform(df['bancos_de_dados'])
+df['bancos_de_dados'] = le.fit_transform(df['bancos_de_dados']) # TODO: COMEÇAR POR AQUI
 # df['etnia'] = le.fit_transform(df['etnia']) #
 df['pcd'] = le.fit_transform(df['pcd'])
 df['vive_no_brasil'] = le.fit_transform(df['vive_no_brasil'])
 df['cargo'] = le.fit_transform(df['cargo'])
 # df['estado_moradia'] = le.fit_transform(df['estado_moradia']) #
-df['cloud_preferida'] = le.fit_transform(df['cloud_preferida'])
+df['cloud_preferida'] = le.fit_transform(df['cloud_preferida']) 
 df['nivel_ensino'] = le.fit_transform(df['nivel_ensino'])
 
 
