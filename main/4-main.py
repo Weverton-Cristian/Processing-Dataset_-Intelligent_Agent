@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import pickle
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, balanced_accuracy_score, confusion_matrix
@@ -13,7 +14,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.base import BaseEstimator, TransformerMixin
 
-df = pd.read_csv('dataset_knn.csv')
+df = pd.read_csv('dataset_mapeado.csv')
 
 class FeatureInteractions(BaseEstimator, TransformerMixin):
     def __init__(self):
@@ -43,7 +44,6 @@ y = df[target_col]
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.3, random_state=42, stratify=y
 )
-
 
 num_pipeline = Pipeline([
     ('imputer', SimpleImputer(strategy='mean')),
@@ -84,6 +84,8 @@ best_model = grid.best_estimator_
 print("✅ Melhor modelo encontrado:")
 print(grid.best_params_)
 
+df.to_csv('dataset_mapeado2.csv', index=False)
+
 y_pred = best_model.predict(X_test)
 
 balanced_acc = balanced_accuracy_score(y_test, y_pred)
@@ -106,3 +108,6 @@ if hasattr(best_model.named_steps['classifier'], 'feature_importances_'):
                               index=np.array(best_model.named_steps['preprocessor'].get_feature_names_out()))
     print("\n📊 Top 15 Importância das variáveis:")
     print(importancias.sort_values(ascending=False).head(15))
+
+with open("best_model.pkl", "wb") as f:
+    pickle.dump(best_model, f)
