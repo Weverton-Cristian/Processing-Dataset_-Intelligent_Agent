@@ -6,3 +6,5 @@ O arquivo "dados_knn_imputed.csv" contém todos os atributos do "dados_processad
 
 KNN (K-Nearest Neighbors, ou K-Vizinhos Mais Próximos) é um algoritmo de aprendizado de máquina supervisionado usado para classificação e regressão.
 Ele é considerado um dos algoritmos mais simples e intuitivos da área.
+
+Link para testar o projeto final: https://agent-inteligent-n8n-forms.vercel.app
